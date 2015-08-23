@@ -57,6 +57,7 @@ app.route("/").get(function(req,res,next){
   //renders the jade with relevant data
   Task.all().then(function(allTasks){
     console.log(allTasks);
+    res.end(mainPage({todoList:allTasks}));
 	})
 });
 

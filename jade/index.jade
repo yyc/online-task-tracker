@@ -23,5 +23,5 @@ html
       ul
         each todo in todoList
           li
-            input(type="checkbox",val=todo.id)
-            =todo.title
+            input(type="checkbox",val=todo.dataValues.id)
+            =todo.dataValues.title
