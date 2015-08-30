@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Tinkertanker/online-task-tracker#readme",
   "dependencies": {
+    "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "jade": "^1.11.0",
     "sequelize": "^3.6.0",

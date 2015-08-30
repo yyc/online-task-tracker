@@ -5,6 +5,7 @@ console.log("App started!");
 var express = require("express");
 var jade  = require("jade");
 var Sequelize = require("sequelize");
+var bodyParser = require("body-parser");
 
 var sequelize = new Sequelize("sqlite://"+__dirname+"/db/database.sqlite");
 
@@ -59,6 +60,15 @@ app.route("/").get(function(req,res,next){
     console.log(allTasks);
     res.end(mainPage({todoList:allTasks}));
 	})
+});
+
+app.use(bodyParser.urlencoded());
+app.route("/create").post(function(req,res,next){
+  Task.create(req.body)
+  .then(function(newTask){
+    console.log(newTask.get());
+    res.json(newTask.get());
+  });
 });
 
 //Tells node to listen on port 8080 for incoming connections
