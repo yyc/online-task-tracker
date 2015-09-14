@@ -38,7 +38,6 @@ html
             'into Facebook.';
         }
       }
-    
       // This function is called when someone finishes with the Login
       // Button.  See the onlogin handler attached to it in the sample
       // code below.
@@ -90,24 +89,22 @@ html
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me', function(response) {
           console.log('Successful login for: ' + response.name);
+          console.log(response);
+          userObject = response;
           $("#loginButton").hide();
-          $("#userId").html("(userid "+response.id+")");
+          // $("#userId").html("(userid "+response.id+")");
           $("#userName").html(response.name);
         });
       }
     
     script(type="text/javascript").
-      var name = "anonymous";
+      var userObject;
       $(document).ready(function(){
-        //        rename();
       });
-      function rename(){
-        name = prompt("What is your name?");
-        $("#userName").html(name);
-      }
       function createTask(){
-        $.post("/create",{title:$("#newTask").val()}).done(function(res){
-          $("form ul").prepend("<li><input type='checkbox' val='"+res.id+"' />"+res.title+"</li>");
+        $.post(location.href+"/create",{title:$("#newTask").val(), creator:userObject }).done(function(res){
+          $("form ul").prepend("<li><input type='checkbox' val='"+res.id
+          +"' />"+res.title+" - "+userObject.name+"</li>");
           $("#newTask").val("");
         });
       }
@@ -119,7 +116,7 @@ html
     h1 Hello World!
     .subtitle Here's a simple todo list
     |Welcome, 
-    a#userName(onclick="rename()",href="#") anonymous
+    span#userName anonymous
     fb:login-button(id="loginButton" scope="public_profile,email" onlogin="checkLoginState();")
     div#userId
     form(method="post",action="/update")
@@ -128,6 +125,8 @@ html
           li
             input(type="checkbox",val=todo.dataValues.id)
             =todo.dataValues.title
+            | - 
+            =todo.dataValues.user.name
         li
           input#newTask(type="text",placeholder="New Task!")
           a(onClick="createTask()") Create
